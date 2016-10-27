@@ -34,16 +34,10 @@ public class ComputerPlayer {
      * 9	7	3	11	
      * 14	15	12	
      * 
-     *
-     * Solving the entire board can be done for (a lot of) extra credit! TA Ryan personally
-     * suggests you try and solve the entire board with some help from Google, as some of
-     * the algorithms can be pretty complex. One option (not the easiest) 
-     * is to use the A* search algorithm.
-     *
 	 * Print out each move on its own line using the same letters as before.
 	 * u -- move up
 	 * d -- move down
-	 * l -- move left (that's an L, not an I)
+	 * l -- move left
 	 * r -- move right
 	 * 
 	 * 
