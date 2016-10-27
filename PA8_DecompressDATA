@@ -1,0 +1,45 @@
+package edu.brandeis.cs12b.pa8;
+
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.zip.InflaterInputStream;
+
+public class Decompress extends Decompresser {
+
+	/**
+	 * Here, you will be given a file that was produced by your Compress class. You should read from that file
+	 * and transform the compressed information back into an array of strings.
+	 * 
+	 * @param f the file created by your compressor
+	 * @return the original array of strings, modulo ordering 
+	 * @throws IOException 
+	 */
+	List <String> list= new ArrayList <> ();
+
+	public String[] decompress(File f) throws IOException {
+		DataInputStream in = new DataInputStream (new InflaterInputStream(new FileInputStream (f)));
+		// traverse through each line
+		try{
+		// while there is more to read in file
+		 while(in.available()>0){
+			 
+			  String k = in.readUTF();
+			  // add each string to list 
+			  list.add(k);
+
+			  }
+		}catch (IOException e){
+			  
+		}
+		// convert list to array
+		 String[] arr = list.toArray(new String[list.size()]);
+		 in.close();
+		// return array
+		return arr;
+	}	
+}
