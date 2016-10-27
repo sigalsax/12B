@@ -1,0 +1,44 @@
+package edu.brandeis.cs12b.pa9;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
+
+public class Floor {
+	int floorNumber;
+	List <Cases> listOfCases= new ArrayList<>();
+
+public Floor (int floorNumber) {
+	this.floorNumber=floorNumber;
+	}
+public int totalCases(){
+	return listOfCases.size();
+	}
+public void addCase(Cases cas){
+	listOfCases.add(cas);
+
+}
+public static int getFloor(int floor) {
+	return floor;
+}
+// giving you a number of third case in list of cases
+public Cases getCase(int cas){
+	for (Cases c: listOfCases){
+		if (c.cas==cas){
+			return c;
+		}
+	}
+	//throw expection
+	return  null;
+}
+public JSONObject getJSON() {
+	JSONObject tempOb = new JSONObject();
+	tempOb.put("number of books", listOfCases.size());
+	for (int i = 0; i < listOfCases.size(); i++) {
+		tempOb.put(Integer.toString(i), ((Floor) listOfCases).getJSON());
+	}
+
+  	return tempOb;
+  }
+}
