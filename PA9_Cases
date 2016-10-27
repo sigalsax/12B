@@ -1,0 +1,39 @@
+package edu.brandeis.cs12b.pa9;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
+
+public class Cases {
+	int cas;
+	int numOfShelves;
+	List <Shelf> totalShelvesInCase= new ArrayList <>();
+	Shelf [] totalShelvesInCase2= new Shelf [numOfShelves];
+	int shelf;
+	
+
+public Cases (int cas) {
+	this.cas=cas;
+}
+
+public int totalShelvesInCase(){
+	return totalShelvesInCase.size(); 
+}
+public Shelf getShelf(int shelf){
+	return totalShelvesInCase.get(shelf);
+}
+public void addShelf(Shelf shel){
+	totalShelvesInCase.add(shel);
+
+} 
+public JSONObject getJSON() {
+	JSONObject tempOb = new JSONObject();
+	tempOb.put("number of books", totalShelvesInCase.size());
+	for (int i = 0; i < totalShelvesInCase.size(); i++) {
+		tempOb.put(Integer.toString(i), ((Cases) totalShelvesInCase).getJSON());
+	}
+	return tempOb;
+
+}
+}
