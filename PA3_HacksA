@@ -1,0 +1,55 @@
+package edu.brandeis.cs12b.pa3;
+
+public class Hacks {
+	/**
+	 * This main method might be useful for debugging. It tests both of your hacks
+	 * and prints the results to the console.
+	 * 
+	 * @param args not used
+	 */
+	public static void main(String[] args) {
+		Hacks h = new Hacks();
+		
+		System.out.println("Calling first hack...");
+		UserAuthenticator auth = new UserAuthenticator();
+		
+		h.hack1(auth);
+		System.out.println("Result of logging in as Eliot with password 1234: " + auth.authenticateUser("Eliot", "1234"));
+		System.out.println();
+		
+		auth = new UserAuthenticator();
+		h.hack2(auth);
+		
+		try {
+			auth.authenticateUser("Bob", "test");
+			System.out.println("User authenticator still working...");
+		} catch (Exception e) {
+			System.out.println("User authenticator is broken!");
+		}
+		
+	}
+/**
+	 * For the first hack, you'll use the UserAuthenticator::addRegularUser method
+	 * in order to add a user with "admin" status. Think about how the addRegularMethod works.
+	 * 
+	 * This method should make it so that a subsequent call to authenticateUser("Eliot", "1234")
+	 * will return "admin".
+	 * 
+	 * @param auth the UserAuthenticator object to hack
+	 */
+	public void hack1(UserAuthenticator auth) {
+			auth.addRegularUser("Eliot", "1234//admin");
+		}
+		
+		
+	/**
+	 * For the second hack, you'll use the UserAuthenticator::addRegularUser method
+	 * in order to completely break the authenticator, so it throws an exception instead of
+	 * properly returning.
+	 * 
+	 * @param auth the UserAuthenticator object to break
+	 */
+	public void hack2(UserAuthenticator auth) throws NumberFormatException {
+		auth.addRegularUser("////", "\n");
+	}
+}
