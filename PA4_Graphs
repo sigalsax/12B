@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import java.util.*;
 
-public class Graph {		
-	ArrayList <Edge> newStore = new ArrayList <Edge> ();
-
+public class Graph {	
 	/**
 	 * Construct a new graph object using the fdp-formatted graph
 	 * provided as a string.
@@ -51,9 +49,8 @@ public class Graph {
 				edge.weight=Integer.parseInt(token [5]);
 				
 				newStore.add(edge);
-			
-	      }
-			scanner.close();
+	    		}
+		scanner.close();
 		}
 	}
 	/**
@@ -76,7 +73,6 @@ public class Graph {
 		}
 		return -1;
 		}
-	
 	
 	/**
 	 * Return an iterable object that will iterate over
