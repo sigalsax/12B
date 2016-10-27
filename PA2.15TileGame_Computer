@@ -39,11 +39,7 @@ public class ComputerPlayer {
      * suggests you try and solve the entire board with some help from Google, as some of
      * the algorithms can be pretty complex. One option (not the easiest) 
      * is to use the A* search algorithm.
-     * 
-     * This might help you get started: http://stackoverflow.com/questions/94975/how-do-you-solve-the-15-puzzle-with-a-star-or-dijkstras-algorithm
-	 * 
-	 * You **must** not modify GameOf15.java for this part.
-	 * 
+     *
 	 * Print out each move on its own line using the same letters as before.
 	 * u -- move up
 	 * d -- move down
