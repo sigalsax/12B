@@ -1,0 +1,88 @@
+package edu.brandeis.cs12b.pa2;
+
+import edu.brandeis.cs12b.pa2.provided.GameOf15;
+import java.util.*;
+public class HumanPlayer {
+
+	public static void main(String[] args) {
+		GameOf15 gof = new GameOf15();
+		HumanPlayer hp = new HumanPlayer();
+		hp.play(gof);
+	}
+	
+	/**
+	 * Here, you must implement a command-line interface to the 15-puzzle game.
+	 * 
+	 * You should ask the user for moves and execute them on the provided board
+	 * until the puzzle has been solved. The move commands are:
+	 * 
+	 * u -- move up
+	 * d -- move down
+	 * l -- move left (that's an L, not an I)
+	 * r -- move right
+	 * 
+	 * @param args
+	 */
+	public static String makeYourMove(Scanner console){
+		System.out.print("Please make another move");
+		String x= console.next();
+		return x;
+	}
+	public void play(GameOf15 gof) {
+		Scanner console = new Scanner (System.in);
+		System.out.println(gof);
+		System.out.println ("Welcome to the 15 Puzzle! Please type in (l)eft, (r)ight, (u)p, (d)own to make your move! ");
+		String x;
+		// while user did not win, while loop will be entered
+		while (!(gof.hasWon())){
+			x= console.next();
+		// if user inputs l
+		if (x.equals("l")){
+			//moveLeft method will be called
+			gof.moveLeft();
+			// checks if user wins
+			if (gof.hasWon()){
+				System.out.println ("You win!");
+			}
+			else {
+				System.out.println(gof);
+			}
+		}
+		// if user inputs r
+		else if (x.equals ("r")){
+				//moveRight method will be called
+				gof.moveRight();
+				if (gof.hasWon()){
+					System.out.println ("You win!");
+					System.out.println(" ");
+			} 	else {
+					System.out.println(gof);
+					System.out.println(" ");
+			}
+		}
+			else if (x.equals ("d")){
+				//moveDown method will be called
+				gof.moveDown();
+				if (gof.hasWon()){
+					System.out.println ("You win!");
+				}
+				else {
+					System.out.println(gof);
+				}
+		} else if (x.equals ("u")){
+				//moveUp method will be called
+				gof.moveUp();
+				// checks if user wins
+				if (gof.hasWon()){
+					System.out.println ("You win!");
+				}
+				else {
+					System.out.println(gof);
+						
+				}
+			}	
+		}
+	}
+}
+	
+
