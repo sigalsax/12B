@@ -1,0 +1,242 @@
+/*
+ * @author Sigal Sax <ssax18@gmail.com> || <siggy819@brandeis.edu>
+ * January 22, 2016
+ * COSCI 12B
+ */
+
+package edu.brandeis.cs12b.pa1;
+
+import java.lang.reflect.Array;
+
+public class WarmupProblems {
+//
+//	public static void main(String[] args) {
+//		int [] items= {5, 6, -7, 8, 12, 13, 4, 21, -4};
+//		System.out.println(sum3 (items));
+//		String s = ("((().())");
+//		System.out.println (parensBalance(s));
+//		String s= ("(([[()][()]]))");
+//		System.out.print(parensBracketsBalance(s));
+	
+	
+	/**
+	 * Returns the number of items that have duplicates in a sorted list. For example,
+	 * in the list [1, 3, 3, 5, 5, 5, 5], countRepeats should return 2, because there are
+	 * two numbers that are repeated -- three and five. The numbers in the list will be
+	 * between -1000 and 1000.
+	 * 
+	 * You may assume that the list is sorted in ascending order.
+	 * 
+	 * @param items the list, sorted in ascending order
+	 * @return the number of repeated elements
+	 */
+	// method that counts number of repeating numbers
+	public static int countRepeats(int[] items) {
+		int duplicate = 0;
+		// for loop that goes through the array of numbers
+		for (int i=0; i<items.length-1; i++){
+			// if the number at index i is equal to the number at the index of the next number then duplicates will increase
+			if (items[i]==items[i+1]){
+				duplicate++;
+			// for loop that goes through length of array
+			for (int j = i+1; j< items.length-1;){
+				// if the number at index i is equal to the number at the index of the next number then j will advance
+				if (items[j]==items[j+1]){
+					j++;
+				} else {
+					// if not, i will take the value of j
+					i = j;
+					j = items.length-1;
+				}
+			}
+		}
+	}
+	return duplicate;
+}
+	
+	
+	/**
+	 * Returns true if a string of parenthesis is balanced. A balanced string
+	 * is a string where every "(" has a matching ")" later in the string and there are
+	 * no ")" without an "(".
+	 * 
+	 * A string with any character beside "(" or ")" is invalid. The empty string is valid.
+	 * 
+	 * Examples: ()  -> TRUE (balanced)
+	 *           (() -> FALSE (unmatched "(")
+	 * @param s a string
+	 * @return if the string is balanced
+	 */
+public static boolean parensBalance(String s) {
+	int openCount=0;
+	int closedCount=0;
+	char lBrace= '(';
+	char rBrace =')';
+	// if passed an empty string, will return true
+	if (s.equals("")){
+		return true;
+	}
+	// for loop that traverses through for loop
+	for (int i=0; i < s.length(); i++){
+		// if i is a left brace, then open count will increment
+		if (s.charAt(i)== lBrace){
+			openCount++;	
+		}
+		// if i is a right brace, then closed count will increment
+		else if (s.charAt(i)== rBrace){
+			closedCount++;
+		}
+		else {
+			return false;
+		}
+		if (closedCount > openCount ){
+			return false;
+		}
+	}
+		// if closed count equals open count then method will return true
+		if (closedCount== openCount){
+			return true;
+	}
+	return false;
+}
+
+	/**
+	 * Return true if there are three integers in the items array that sum up to
+	 * zero. Return false otherwise. THe items in the array will be unique.
+	 * 
+	 * Examples: [1, 3, -4, 2, -2] -> TRUE (1 + 3 + -4 = 0) [8, -6, 4, -2] ->
+	 * TRUE (8 + -6 + -2 = 0) [3, 4, 1, 52] -> FALSE
+	 * 
+	 * Try to solve this problem in O(n^2) time -- in other words, try to only
+	 * nest your for loops two levels deep. It can be done!
+	 * 
+	 * You may also assume that all the items are in between -100 and 100.
+	 * 
+	 * @param items
+	 *            the items to check
+	 * @return whether or not there are three integers who sum to three
+	 */
+	public static boolean sum3(int[] items) {
+		for (int i=0; i<items.length-1;i++){
+			for (int j=0; j< items.length-1; j++){ 
+				if (items[j] > items[j+1]){
+					int temp= items[j];
+					items[j]= items[j+1];
+					items[j+1]= temp;
+				}
+			}
+		}
+		// taken from https://en.wikipedia.org/wiki/3SUM
+		for (int i=0; i<items.length-3; i++){
+			// declares variable a to be i
+			int a = items [i];
+			// start would be 1 more than i
+			int start=i+1;
+			int end=items.length-1;
+			// while start is less then end, b will equal the items at start and c will equal items at end
+			while (start<end){
+				int b=items[start];
+				int c = items[end];
+				// if the sum of a, b, and c does equal 0 then method will return true
+				if (a+b+c==0){
+					return true;
+				// if the sum of a, b, and c is greater than 0, equation will be changed accordingly
+				}else if (a + b + c > 0){
+					// end will decrement and focus on value of 1 less than end
+					end=end-1;
+				}else {
+					start=start+1;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * This problem is like the previous problem, but also includes braces "[" and "]".
+	 * Again, ensure that the string is balanced, but note that the addition of brackets
+	 * adds some complexity. The string "[()]" is balanced, but the string "[(])" is not. 
+	 * 
+	 * Hint: the rules to determine if a string is balanced are as follows:
+	 * 
+	 *   1. The empty string is a valid string
+	 *   2. If A and B are valid strings, A+B is a valid string.
+	 *   3. If A is a valid string, then (A) is a valid string.
+	 *   4. If A is a valid string, then [A] is a valid string.
+	 * 
+	 * @param s the string
+	 * @return if the string is balanced
+	 */
+public static boolean parensBracketsBalance(String s) {
+	int parenCount=0;
+	int bracketCount=0;	
+	char lBrace= '(';
+	char rBrace =')';
+	char lBracket= '[';
+	char rBracket= ']';
+
+	if (s.equals("")){
+			return true;
+	}
+	for (int i=0; i < s.length(); i++){
+		if (s.charAt(i)== lBrace){
+			parenCount++;	
+		}
+		else if (s.charAt(i)== rBrace){
+			parenCount--;
+		}
+		else if (s.charAt(i)== lBracket){
+			bracketCount++;
+		}
+		else if (s.charAt(i)== rBracket){
+			bracketCount--;
+		}
+		else {
+			return false;
+		}
+	}
+		if ((parenCount==0) && bracketCount==0){
+			if ((s.charAt(0)== lBracket) && (s.charAt(1)== rBrace) || ((s.charAt(s.length()-1)== lBracket) && (s.charAt(s.length()-2)== rBracket))){
+				return false;
+			}
+			if ((s.charAt(0)== lBrace) && (s.charAt(s.length()-1)== rBrace)){
+				return true;
+			}
+			else if ((s.charAt(0)== rBrace) && (s.charAt(s.length()-1)== lBrace)){
+				return false;
+			}
+			else if ((s.charAt(0)== lBracket) && (s.charAt(s.length()-1)== rBracket)){
+				return true;
+			}
+			
+			if  ((s.charAt(s.length()-1) == lBracket)) { 
+				return false;
+			}
+			else if (s.charAt(0) == rBracket){
+				return false;
+			}
+			else if ((s.charAt(0)== lBracket) && (s.charAt(s.length()-1) == lBracket) || (s.charAt(s.length()-2) == lBrace) || (s.charAt(1) == rBrace) ) {
+				return false;
+			}
+			else if (s.charAt(s.length()-2) == lBrace){
+				return false;
+			}
+			else if ((s.charAt(0)==rBrace) && (s.charAt(1)==rBracket) || (s.charAt(0)==lBracket) && (s.charAt(1)==rBrace)){
+				return false;
+			}
+			else if ((s.charAt(s.length()-1)== lBracket) || (s.charAt(s.length()-2)== lBracket)){
+				return false;
+			}
+			else if ((s.charAt(0)== rBracket) || (s.charAt(1)==rBracket)){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
+
+
