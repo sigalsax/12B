@@ -1,0 +1,99 @@
+package edu.brandeis.cs12b.PA7;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+public class Noun {
+	public Set<Noun> children= new HashSet<Noun>();
+	Noun parent;
+	Noun child;
+	public String name;
+	public Noun(String name){
+	this.name=name;
+	}
+	// add children to list 
+	public void addChild(Noun curr2){
+			children.add(curr2);
+			
+	}
+  
+	// checks if parent has child
+	public boolean hasChild(String type, String supertype){
+		// traverse through child and see if a equals name
+		for (Noun a: children)
+			if (a.name.equals(name)){
+				return true;
+		}
+		return false;	
+	}
+	
+}
+
+public class KnowledgeBase {
+// makes list of words
+List<Noun> words= new ArrayList<Noun>();
+
+	public void storeIsA(String type, String supertype) {
+		//sets curr and curr2 to null
+		Noun curr= null;
+		Noun curr2= null;
+		// traverse through word lists
+		for (Noun a: words){
+			// if there is a that equals supertype that is passed in, then set the null curr to a
+			if (a.name.equals(supertype)){ //if string is equal to supertype
+				curr=a;	// curr is going to be name that is supertype
+			}
+		}
+		// if curr is empty
+		if (curr==null){
+			curr= new Noun(supertype);
+			words.add(curr);// add curr to list
+		}
+			for (Noun b: words){
+				if (b.name.equals(type)){ //if string is equal to supertype
+					curr2=b;
+				}
+			}
+			if(curr2== null){
+				curr2= new Noun (type);
+				words.add(curr2);
+			}
+			curr.addChild(curr2);
+		}
+
+	public boolean isA(String type, String supertype) {
+		Noun curr=null;
+	
+		for (Noun a: words){
+			if (a.name.equals(supertype)){ //if string is equal to supertype
+				curr=a;
+			}
+		}		
+		return recursion (type, curr);
+	}
+	public static boolean recursion (String target, Noun root){
+		if(root==null){
+			return false;
+		}
+		else if (root.children==null){
+			return false;
+		}
+		boolean found= false;
+		for (Noun c: root.children){
+			if (c.name.equals (target)){
+				found=true;
+				break;
+			}
+			else{
+				found= (recursion(target, c));
+				if (found== true){
+					break;
+				}
+			}
+		}
+		return found;
+	}
+}
