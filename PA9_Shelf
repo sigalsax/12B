@@ -1,0 +1,42 @@
+package edu.brandeis.cs12b.pa9;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
+
+public class Shelf {
+	//how many books it can hold and location
+	List <Books> listOfBooks= new ArrayList <>();
+	int capacity;
+	int shelf;
+	BookLocation location;
+	Books title;
+	JSONObject getJSONShelf;
+	
+public Shelf (int capacity, int shelf){
+	this.capacity= capacity;
+	this.shelf=shelf;
+}
+public void addBook(Books title){
+		listOfBooks.add(title);
+	}
+
+public boolean hasRoom(){
+	if (listOfBooks.size()<capacity){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+public JSONObject getJSONShelf() {
+	JSONObject tempOb = new JSONObject();
+	tempOb.put("number of books", listOfBooks.size());
+	for (int i = 0; i < listOfBooks.size(); i++) {
+		tempOb.put(Integer.toString(i), ((Shelf) listOfBooks).getJSONShelf());
+	}
+	return tempOb;
+}
+
+}
