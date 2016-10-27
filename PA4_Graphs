@@ -1,0 +1,149 @@
+package edu.brandeis.cs12b.pa5;
+
+import java.util.ArrayList;
+
+import java.util.*;
+
+public class Graph {		
+	ArrayList <Edge> newStore = new ArrayList <Edge> ();
+
+	/**
+	 * Construct a new graph object using the fdp-formatted graph
+	 * provided as a string.
+	 * 
+	 * The format looks like this:
+	 * 
+	 *  graph g {
+	 *  "a" -- "b" [ label = "10" ];
+	 *  "b" -- "c" [ label = "20" ];
+	 *  }
+	 *  
+	 *  To represent that vertex A is connected to vertex B with
+	 *  a weight of 10, and B is connected to C with weight 20.
+	 *
+	 * @param fdp the graph to construct
+	 */
+	private String fdp;
+	
+	public class Edge {
+		public String vertex1;
+		public String vertex2;
+		public int weight;		
+	}
+	public Graph(String fdp) {
+		Scanner scanner= new Scanner(fdp);
+		// if line does not equal graph then return an error
+		if (!scanner.next().equals("graph")){
+			//give error
+		}
+		else {
+			// splits at every line
+			String [] newArray= fdp.split("\n");
+			for (int i=1; i<newArray.length-1; i++){
+				String current= newArray[i];
+				String [] token = current.split("\"");
+				System.out.print(Arrays.toString(token));
+				
+				Edge edge = new Edge();
+				// assigns vertex and weight to index 1, 3, 5
+				edge.vertex1= token[1];
+				edge.vertex2= token[3];
+				edge.weight=Integer.parseInt(token [5]);
+				
+				newStore.add(edge);
+			
+	      }
+			scanner.close();
+		}
+	}
+	/**
+	 * Get the weight of the edge between vertex a and vertex b.
+	 * 
+	 * If there is no edge connecting the two vertices, return -1.
+	 * @param a one vertex
+	 * @param b another
+	 * @return the edge weight
+	 */
+
+	public int getEdgeWeight(String a, String b) {
+		for (Edge temp: newStore){
+			if (temp.vertex1.equals(a) && temp.vertex2.equals(b)){
+				return temp.weight;
+			}
+			else if (temp.vertex2.equals(a) && temp.vertex1.equals(b)){
+				return temp.weight;
+			}
+		}
+		return -1;
+		}
+	
+	
+	/**
+	 * Return an iterable object that will iterate over
+	 * the vertices directly connected to vertex A
+	 * @param a the vertex
+	 * @return an iterator of strings that A is connected to
+	 */
+	public Iterable<String> getConnectedEdges(String a) {
+		ArrayList<String> vertices= new ArrayList<> ();
+		//adding vertices and connecting them to each other; from a to b and b to a
+		for (Edge temp: newStore){
+			// attaching vertices togther
+			if(temp.vertex1.equals(a)){
+				vertices.add(temp.vertex2);
+			}
+			// attaching the vertices together
+			else if (temp.vertex2.equals(a)){
+				vertices.add(temp.vertex1);
+			}
+		}
+		return vertices;
+	}
+
+	/**
+	 * Gets the length of the path (sum of the edge weights)
+	 * represented by the passed iterable. If the path is invalid,
+	 * (jumps between non-connected vertices), return -1
+	 * @param path an iterable of vertices
+	 * @return the path length
+	 */
+	public int getPathLength(Iterable<String> path) {
+		String previous=null;
+		int tot=0;
+		// if start is first node, that will be the value of length of node
+		for (String value: path)
+			if (previous== null){
+				previous=value;
+			}
+			else{
+				// length would be the value of node to node
+				int length= getEdgeWeight (previous, value);
+				
+					if (getEdgeWeight(previous, value) == -1){
+						return -1;
+					}
+					previous= value;
+					tot= tot +length;
+					}
+			return tot;
+
+	}
+	
+	/**
+	 * Returns an iterable over all the vertices in the graph
+	 * @return the vertices
+	 */
+	public Iterable<String> getVertices() {
+		ArrayList <String> different= new ArrayList <String> ();
+		// checks if node already exists
+		for (Edge value: newStore){
+			if (!different.contains(value.vertex1)){
+				different.add(value.vertex1);
+			}
+			if (!different.contains(value.vertex2)){
+				different.add(value.vertex2);
+			}
+		}
+		return different;
+	}
+}
