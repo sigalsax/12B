@@ -1,0 +1,156 @@
+package edu.brandeis.cs12b.pa9;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.json.JSONObject;
+
+public class LibraryClass extends Library{
+	List <Floor> listOfFloors = new ArrayList <>();
+	Map <String, Boolean> checking= new HashMap <> ();
+
+	
+	int numFloors;
+	Floor [] floor= new Floor [numFloors];
+	int [] casesPerFloor;
+	int[][] shelvesPerCase;
+	int[][][] shelfCapacity;
+
+public LibraryClass(int floors, int[] casesPerFloor, int[][] shelvesPerCase, int[][][] shelfCapacity){
+	this.numFloors= floors;
+	this.casesPerFloor=casesPerFloor;
+	this.shelvesPerCase= shelvesPerCase;
+	this.shelfCapacity=shelfCapacity;
+	floor= new Floor [numFloors];
+	for(Floor a:listOfFloors){
+		listOfFloors.remove(listOfFloors.size()-1);
+	}
+	for (int i=0; i <numFloors; i++){
+		listOfFloors.add(new Floor(i));
+		for (int j=0; j <casesPerFloor[i]; j++){
+			Cases tempCase= new Cases(j);
+			listOfFloors.get(i).addCase(tempCase);
+			for (int k=0; k<shelvesPerCase[i][j]; k++){
+				Shelf tempShelf= new Shelf(shelfCapacity [i][j][k], k);
+				listOfFloors.get(i).getCase(j).addShelf(tempShelf);
+			}
+		}
+	}
+}
+	@Override
+	public Iterator<String> iterator() {
+		
+		return checking.keySet().iterator();
+				
+	}
+
+	@Override
+	public int getNumberOfFloors() {
+		return numFloors;
+	}
+
+	@Override
+	public int getCasesOnFloor(int floor) {
+		return listOfFloors.get(floor).totalCases();
+	}
+
+	@Override
+	public int getShelvesInCase(int floor, int cas) {
+		return listOfFloors.get(floor).getCase(cas).totalShelvesInCase();
+	}
+
+	@Override
+	public int getCapacityOfShelf(int floor, int cas, int shelf) {
+		return listOfFloors.get(floor).getCase(cas).getShelf(shelf).capacity;
+	}
+	
+	// go through all floors, shelves, cases of library
+	@Override
+	public BookLocation addNewBook(String title) {
+		for(int i=0; i <listOfFloors.size(); i++){
+			for (int j=0; j<casesPerFloor[i]; j++){
+				for (int k=0; k < shelvesPerCase[i][j]; k++){
+				Shelf tempShelf= listOfFloors.get(i).getCase(j).getShelf(k);
+					if (tempShelf.hasRoom()){
+						Books newBook= new Books (title, new BookLocation(i, j, k));
+						tempShelf.addBook(newBook);
+						checking.put(title, true);
+						//System.out.println(getBooksAt(newBook.bookLocation));
+						return newBook.bookLocation;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	@Override
+	public BookLocation getLocationOfBook(String title) {
+		for(int i=0; i <listOfFloors.size(); i++){
+			for (int j=0; j<casesPerFloor[i]; j++){
+				for (int k=0; k < shelvesPerCase[i][j]; k++){
+					for (Books b: listOfFloors.get(i).getCase(j).getShelf(k).listOfBooks){
+						if (b.title.equals(title)){
+							return b.bookLocation;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	@Override
+	public Set<String> getBooksAt(BookLocation loc) {
+		Set <String> bookNames= new HashSet<String> ();
+		//System.out.println(listOfFloors.get(loc.getFloor()).getCase(loc.getCas()).getShelf(loc.getShelf()).listOfBooks.size());
+		for (Books b: listOfFloors.get(loc.getFloor()).getCase(loc.getCas()).getShelf(loc.getShelf()).listOfBooks){
+			if (checking.get(b.title)){
+				bookNames.add(b.title);
+			}
+		}
+			return bookNames;
+	}
+
+	@Override
+	public boolean checkOut(String title) {
+		
+		if (checking.get(title)== true){
+			checking.put(title, false);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void checkIn(String title) {
+			checking.put(title, true);
+	}
+
+	@Override
+	public void writeToFile(File f) {
+		
+		try {	
+		JSONObject jo = new JSONObject();
+			
+			FileWriter output= new FileWriter(f);
+		
+			output.write(jo.toString());
+			output.close();
+		
+		} catch (Exception e){
+			
+		  }
+		
+		}
+	
+
+
+}
