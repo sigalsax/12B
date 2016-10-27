@@ -1,0 +1,25 @@
+package edu.brandeis.cs12b.pa9;
+
+import org.json.JSONObject;
+
+public class Books {
+	String title;
+	BookLocation bookLocation;
+
+
+public Books (String title, BookLocation bookLocation){
+	this.title=title;
+	this.bookLocation= bookLocation;
+	getJSON();
+}
+public JSONObject getJSON() {
+	JSONObject temp = new JSONObject();
+	temp.put("title", title);
+	temp.put("floor", bookLocation.getFloor());
+	temp.put("case", bookLocation.getCas());
+	temp.put("shelf", bookLocation.getShelf());
+	
+	return temp;
+}
+}
+
