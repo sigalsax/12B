@@ -1,2 +1,2 @@
-# 12B Interesting programming assignments. 
+# OOP Programming Assignmnets
 At the top of each programming assignment there are clarification comments and instructions.
